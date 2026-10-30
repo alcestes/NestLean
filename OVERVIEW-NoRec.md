@@ -17,7 +17,8 @@ and half-duplex (`IsHalfDuplex`) is internally bisimilar
 (`InternallyBisimilar`) to its consistent instrumentation `MN`
 (`consistentInstrumentation N = some MN`).
 
-The witness relation is the same as in the general proof:
+The witness relation is the same as in the finite proof
+(`monitor_soundness`, [OVERVIEW-ecoop26.md](OVERVIEW-ecoop26.md)):
 `R N' MN' := consistentInstrumentation N' = some MN' ∧ net_trans_star N N'`
 (consistency plus `τ*`-reachability), and each internal step is matched by
 one of four correspondence lemmas.
@@ -115,9 +116,9 @@ Supporting material: `Nest/NoRec/Tests/` (e.g. `OverapproxTest`),
 `Nest/NoRec/Counterexamples/` (separation witnesses such as
 `CounterexampleMonitorDiamond`, `CounterexampleDrainReorder`).
 
-## 4. Differences with the proof of `monitor_soundness`
+## 4. Differences with the finite proof of `monitor_soundness`
 
-| Aspect | `monitor_soundness` ([OVERVIEW.md](OVERVIEW.md)) | `monitor_soundness_norec` (here) |
+| Aspect | `monitor_soundness` ([OVERVIEW-ecoop26.md](OVERVIEW-ecoop26.md)) | `monitor_soundness_norec` (here) |
 |---|---|---|
 | Hypotheses | `N.Prunable` (deep prunability, which also yields `N.Monitorable` via `prunable_implies_monitorable`) + liveness + half-duplex | `N.NoRec` (syntactic, decidable) + liveness + half-duplex; **no** monitorability/adequacy hypotheses |
 | Termination argument | Round-robin scheduler (`FairScheduler`): `rr_run_dichotomy` yields a fair infinite path (`turn_run_fair`) or a stuck state (`turn_run_stuck`) | Free from `NoRec`: steps go to strict subterms (`st_trans_size_lt_of_norec`, budgets), infinite internal paths don't exist (`noInfiniteInternalPath_of_NoRec`), stuck states are reachable (`exists_stuck_reachable_of_NoRec`) — **no scheduler, no fairness machinery** |
@@ -126,9 +127,9 @@ Supporting material: `Nest/NoRec/Tests/` (e.g. `OverapproxTest`),
 | Adequacy / cover layer | Whole `SessionAdequacy` + `CoverDeep` apparatus: `Prunable`, `forced_step`, `go_unfold_rel`, maximal derivations, `SeenEvidence`, `has_cover`, `deep_cover`, `can_enc_of_cover` | None of it: `drain_implies_mon_exists_accepts_norec` (`DrainAccept`, via the vacuous assembly) suffices |
 | Dequeue absorption | `habs_full` along `UnfoldStar` chains (`DequeueCorrespondence`) | `monitor_fold_absorb_dequeue_transfer_norec` (`DeepComplement`) |
 | Comm absorption | `monitor_fold_aux_out_aux_general` (needs adequacy hypotheses) | `monitor_fold_aux_out_aux_norec` (needs only `NoRec`+`NoDupl`) |
-| Vacuous recursion | Not present (general proof handles `tRec` via adequacy) | Parallel `VacuousRec` toolkit bridging `NoRec` types into the vacuous drain assembly |
+| Vacuous recursion | Not present (the finite proof handles `tRec` via adequacy) | Parallel `VacuousRec` toolkit bridging `NoRec` types into the vacuous drain assembly |
 
-In short: the general proof pays for arbitrary recursion with a semantic
+In short: the finite proof pays for arbitrary recursion with a semantic
 finiteness hypothesis (`Prunable`/`DeepAdequate`, with `Monitorable` derived
 rather than assumed), a cover
 derivation layer, and a fair scheduler; the NoRec proof replaces all three
