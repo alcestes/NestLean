@@ -1,15 +1,23 @@
-# Nest — Mechanical formalisation of coinductive monitor soundness
+# Nest — Network-Enforced Session Types, Mechanised
 
-This is the Lean 4 mechanisation of the coinductive monitor-soundness result:
+This is the Lean 4 mechanisation of the coinductive monitor theory of NEST:
 an output-live, half-duplex network is internally bisimilar (coinductively)
 to its consistent instrumentation. The main theorem is `monitor_soundness_co`
 (`Nest/MonitorSoundnessCo.lean`): well-formed, no-self-send, roles-present,
 output-live, half-duplex networks are internally bisimilar
 (`InternallyBisimilarCo`) to their consistent instrumentation
-(`consistentInstrumentation_co N = some MN`) — with no prunability or
-monitorability hypotheses. The full proof scripts, with all auxiliary lemmas
-proved and no `sorry`/`admit`/`axiom` anywhere, are in `Nest/` and build with
-`lake build Nest`.
+(`consistentInstrumentation_co N = some MN`). The full proof scripts, with all
+auxiliary lemmas proved and no `sorry`/`admit`/`axiom` anywhere, are in `Nest/`.
+
+Build instructions:
+
+- `lake exe cache get`
+- `lake build Nest`
+
+**Note:** a full build takes around 26 minutes on an AMD Ryzen 7 PRO 4750U with
+32 GB of RAM. Most of the time is spent on the larger examples under
+`Nest/Examples/`, which can be commented out from `Nest.lean` for a faster
+build.
 
 Three network-level soundness theorems are proved, with standard axioms only
 (`[propext, Classical.choice, Quot.sound]`):
@@ -27,16 +35,6 @@ Three network-level soundness theorems are proved, with standard axioms only
   hypothesis traded for syntactic `Network.NoRec` (every step shrinks the
   session type, so drainage, termination, and stuck-reachability hold by
   plain induction, with no scheduler or fairness machinery).
-
-Build instructions:
-
-- `lake exe cache get`
-- `lake build Nest`
-
-**Note:** a full build takes around 26 minutes on an AMD Ryzen 7 PRO 4750U with
-32 GB of RAM. Most of the time is spent on the larger examples under
-`Nest/Examples/`, which can be commented out in `Nest.lean` for a faster
-build.
 
 For the structure of the mechanised proofs — dependency order, file maps,
 and where each paper step lands in Lean — see
