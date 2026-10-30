@@ -1,0 +1,15 @@
+name = "Nest"
+version = "0.1.0"
+defaultTargets = ["nest"]
+
+[[lean_lib]]
+name = "Nest"
+
+[[lean_exe]]
+name = "nest"
+root = "Main"
+
+[[require]]
+name = "cslib"
+scope = "leanprover"
+rev = "main"
