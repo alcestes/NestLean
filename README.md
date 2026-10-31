@@ -83,33 +83,6 @@ and where each paper step lands in Lean — see
   `Mp'`/`Mq'` (via `mon_tr_yes` +
   `monitor_fold_val_partial_eq_of_monitor_fold`), not `stq'.1`.
 
-- **Encoder with explicit maximality.** Paper `STMon-IntPfx`/`STMon-ExtPfx`
-  have a "maximal `∅ ≠ K ⊆ I`" side condition and `STMon-Bad` as rejection.
-  Lean splits this into `mon_tr_yes_base` (rigid `intC`/`extC`/`tRec`),
-  `mon_tr_yes_exist` (existential kept-lists), `mon_tr_yes_max_deriv`
-  (hereditary maximality + coverage + source-order `Sublist`), `mon_tr_yes :=
-  ∃ derivation, Maximal`, and `mon_tr_no` (`∀ V, ¬ mon_tr_yes T γ V`) for
-  `STMon-Bad`. Determinism is `mon_tr_yes_target_unique` (needs only `NoDupl`).
-
-- **`Prunable`, the one hypothesis with no paper counterpart.** The paper
-  states maximality as a side condition and never asks whether the
-  monitor's verdict can actually be computed. The mechanisation must
-  compute it: `monitor_fold` works by pruning the session type, and on
-  recursive types naive pruning can unfold `tRec` forever. `Prunable`
-  (`Nest/SessionAdequacy.lean`, lifted to networks as `Network.Prunable`)
-  is the certificate saying "this type can be pruned": every branch target
-  and every unfolded `tRec` body is prunable (a `seen` list bounds
-  recursion — fresh binders unfold once, revisits cut), and every message
-  the type can expose (`ExposedFrom`) is one-message prunable
-  (`PrunableOneMsg` — no reachable cycle in the `Has`-filtered
-  `forced_step` relation). It is used exactly where the general proof
-  needs a verdict to exist: `Network.DeepAdequate.of_Prunable` turns it
-  into adequate fuel, after which `deep_cover` + `can_enc_of_cover`
-  build the monitor fold that keeps `comm` steps matchable. In other
-  words, it rules out "the monitor has no verdict" for recursive types —
-  the case the paper's side condition assumes away — while the `NoRec`
-  proof needs none of it (recursion-freedom gives termination for free).
-
 - **Recursion unfolding machinery.** Paper has `unfold(T)` (the ECOOP 2026
   paper, Def. st-unfolding) plus `S-Rec`/`STMon-Rec`. Lean has `st_trans.tRec`,
   `mon_tr_yes_base.tRec` / `mon_tr_yes_exist.unfold` / `mon_tr_yes_max_deriv.unfold`,

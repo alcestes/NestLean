@@ -181,9 +181,9 @@ Ports in `SemFoldCo`, `FoldExistsCo`, `LiveCanDrainCo`, and
 and Kristýna Petrlíková <auburn@kam.mff.cuni.cz>;
 see per-file headers for details.
 
-Supporting material: `Nest/Examples/` (protocol examples plus the
-`WallDemo` duality separating example), `Nest/Tests/` (including the
-script-generated `MonitorCo` corpus tests `tNN_sound_*`), `Nest/NoRec/`
+Supporting material: `Nest/Examples/` (protocol examples), `Nest/Tests/`
+(including the script-generated `MonitorCo` corpus tests `tNN_sound_*` and
+the `WallDemo` duality separating example), `Nest/NoRec/`
 (certified tests, the recursion-free development, and `NoRecUtils` with
 the relocated `LeadsTo`/graft utilities), `Nest/Counterexamples/`
 (witnesses).
